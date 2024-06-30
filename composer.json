@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4"  : {
+            "Vekas\\Translation\\" : "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "^11"
+    }
+}
