@@ -1,4 +1,16 @@
 {
+    "name": "vekas/translation",
+    "type": "library",
+    "description": "translation dependencies",
+    "keywords": ["translate"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ahmed hassan sadiq",
+            "email": "ahmed_alsadi56@outlook.com",
+            "role": "Developer"
+        }
+    ],
     "autoload": {
         "psr-4"  : {
             "Vekas\\Translation\\" : "src/"
