@@ -19,28 +19,29 @@ trait DictioneryTestLogic {
 /**
  * Dictionery Class can handle data of adding item of translation and load data 
  */
-class Dictionery implements  LangHandlerInterface {
+class Dictionery  {
     use DictioneryTestLogic;
     private array $items = [] ;
 
     /**
-     * @param LangLoaderInterface | LangHandlerInterface $languageService 
+     * @param LangHandlerInterface $languageService 
      */
     function __construct(
         private  $languageService
-    ) {
-        $this->items  = $this->languageService->load();
-    }
+    ) {}
     
     function itemExist($item) {
-        return array_key_exists($item,$this->items);
+        return $this->languageService->getItem($item) == null ? false : true ;
     }
 
 
     function findOpposit($item) {
-        return isset($this->items[ strtolower($item) ] ) ? $this->items[$item] : $item; 
+        return $this->languageService->getItem($item);
     }
 
+    function removeItem($element) {
+        return $this->languageService->removeItem($element);
+    }
 
     /**
      * this will result add item to dictionery array and save it to the source
@@ -49,11 +50,6 @@ class Dictionery implements  LangHandlerInterface {
      */
     function addItem($source, $target,$force = false) {
         $this->languageService->addItem( strtolower( $source ) , $target,$force );
-        $this->items = $this->languageService->load();
-    }
-
-    function update() {
-        $this->items = $this->languageService->load();
     }
 
 
