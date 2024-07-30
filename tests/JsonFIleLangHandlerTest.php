@@ -112,12 +112,19 @@ class JsonFIleLangHandlerTest extends TestCase {
 
 
 
+    function testAddAndRemoveItem() {
+        $this->jsonFileLangHandler->addItem("toy","لعبة");
+        $this->jsonFileLangHandler->removeItem("toy");
+        $this->assertNull($this->jsonFileLangHandler->getItem("toy"));
+    }
+
 
     function loadSwappedVersionOfJsonFileHandler() {
         $handler =  new JsonFileLangHandler(__DIR__."/dics","2","ar","en");
-        $handler->load();
         return $handler;
     }
+
+
 
 
 }

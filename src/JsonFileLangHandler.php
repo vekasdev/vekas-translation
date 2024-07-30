@@ -24,6 +24,7 @@ class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface 
       ) {
         $this->source = $source;
         $this->target = $target;
+        $this->load();
       }
 
     /**
@@ -148,7 +149,6 @@ class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface 
     function addItem($source, $target,$force = false) {
 
         if ($this->isSwapped()) {
-
             
             if ( array_key_exists ( $source , $this->data ) && ! $force ) { 
                 throw new ItemAlreadyExistException;
@@ -165,10 +165,8 @@ class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface 
             $this->swapLanguages();
 
             /* returning the data into its original order  */
-
             
             $this->update($this->data);
-
             
             $this->flipData();
 
@@ -177,20 +175,53 @@ class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface 
             $this->swapLanguages();
             
         } else {
-            
             if ( array_key_exists ( $source , $this->data ) && ! $force ) {
                 throw new ItemAlreadyExistException;
             }
-
             $this->data[$source] = $target;
-
             $this->update($this->data);
-
         }
         
-
     }
 
+    function getItem($source) {
+        $item = isset($this->data[$source]) ? $this->data[$source] : null ;
+        return $item;
+    }
+
+    function removeItem($item) {
+        if ( isset($item) ) {
+            unset($this->data[$item]);
+            if ($this->isSwapped()) {
+
+                /* returning the data into its original order */
+
+                $this->flipData();
+
+                $this->swapState();
+
+                $this->swapLanguages();
+
+                /* returning the data into its original order  */
+                
+                $this->update($this->data);
+                
+                $this->flipData();
+
+                $this->swapState();
+
+                $this->swapLanguages();
+
+            } else {
+                $this->update($this->data);
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    
     function setSource($source) {
         $this->source = $source;
     }
