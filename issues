@@ -10,3 +10,17 @@ solution : make it on dictionery class to be passed as dependencies to it altoge
 - in case of choosing in JsonDictioneryFactory like en => en or ar => ar
 
 - change the mehod name findOpposit into translate
+
+
+
+- test jsonDictioeryFactory #complete
+- test language validators #complete
+- in case of choosing in JsonDictioneryFactory like en => en or ar => ar
+  make a null object that returns the same text #complete
+
+
+- make a setup system by xml for config and set data like translation files for json Dictionaries 
+- make command to create two languages pairs
+
+
+- handle the case when the user look for not exactly data to translate but part of it ( in phrases ) the programme should find the closest translation for it

@@ -7,6 +7,6 @@ use Vekas\Translation\LanguageValidator;
 class SpanishValidator extends LanguageValidator {
     protected string $languageType;
     function validate($text): bool {
-        return (bool) preg_match('/^[a-zA-ZáéíóúñÁÉÍÓÚÑüÜ\s]+$/u',$text);
+        return (bool) preg_match('/^[a-zA-ZáéíóúñÁÉÍÓÚÑüÜ\s0-9 .,!?\'"()\’\”\“¿]+$/u',$text);
     }
 }

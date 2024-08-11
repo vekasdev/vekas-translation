@@ -4,6 +4,7 @@
 namespace Vekas\Translation;
 
 use Vekas\Translation\Exceptions\InvalidLanguageValueException;
+use Vekas\Translation\Interfaces\DictionaryInterface;
 use Vekas\Translation\Interfaces\LangHandlerInterface;
 use Vekas\Translation\Interfaces\LangLoaderInterface;
 
@@ -20,7 +21,7 @@ trait DictioneryTestLogic {
 /**
  * Dictionery Class can handle data of adding item of translation and load data 
  */
-class Dictionary  {
+class Dictionary  implements DictionaryInterface {
     use DictioneryTestLogic;
     private array $items = [] ;
 
@@ -34,7 +35,7 @@ class Dictionary  {
     ) {}
     
     /**
-     * @throws InvalidLanguageValueException
+     * @inheritDoc
      */
     function itemExist($item) {
         $this->validateLang($item);
@@ -42,7 +43,7 @@ class Dictionary  {
     }
 
     /**
-     * @throws InvalidLanguageValueException
+     * @inheritDoc
      */
     function findOpposit($item) {
         $this->validateLang($item);
@@ -50,7 +51,7 @@ class Dictionary  {
     }
 
     /**
-     * @throws InvalidLanguageValueException
+     * @inheritDoc
      */
     function removeItem($item) {
         $this->validateLang($item);
@@ -58,10 +59,7 @@ class Dictionary  {
     }
 
     /**
-     * this will result add item to dictionery array and save it to the source
-     * and resolve the json array and return it back to store in dictionery $items property
      * @inheritDoc
-     * @throws InvalidLanguageValueException
      */
     function addItem($source, $target,$force = false) {
         $this->validateLang($source);
