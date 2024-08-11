@@ -1,0 +1,12 @@
+- i have a language validator and the issue were in where to put it in pattern design system 
+is it in dictionery class but the issue were because if when swap the language manually ( which is not designed to behave like it at all ) 
+
+solution : make it on dictionery class to be passed as dependencies to it altogether with the handler interface
+
+
+
+- complete write the validation role in dictionery class <<tests>>
+
+- in case of choosing in JsonDictioneryFactory like en => en or ar => ar
+
+- change the mehod name findOpposit into translate

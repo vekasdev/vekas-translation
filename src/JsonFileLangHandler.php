@@ -10,20 +10,14 @@ use Vekas\Translation\Interfaces\LangHandlerInterface;
 class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface  {
     private $data = [];
 
-    private $source = "";
-
-    private $target = "";
-
     private $swapped = false;
 
     function __construct (
       private string $directory ,
       private string $separator = "" ,
-      $source ,
-      $target 
+      private string $source,
+      private string $target
       ) {
-        $this->source = $source;
-        $this->target = $target;
         $this->load();
       }
 
@@ -133,12 +127,24 @@ class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface 
         return file_put_contents($this->getFullPath(),$json) !== false ? true : false ;
     }
 
+
+    /**
+     * flip key with values at every call
+     */
     function flipData() {
         $this->data = array_flip($this->data);
     }
+
+    /**
+     * toggle the state of swapping
+     */
     function swapState() {
         $this->swapped = (bool) ! $this->swapped;
     }
+
+    /**
+     * toggle between the source language and target language
+     */
     function swapLanguages() {
         $source = $this->source;
         $this->source = $this->target;
