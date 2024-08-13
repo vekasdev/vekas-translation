@@ -190,6 +190,11 @@ class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface 
         
     }
 
+    /**
+     * get item of data of translation
+     * @param string $source
+     * @return string
+     */
     function getItem($source) {
         $item = isset($this->data[$source]) ? $this->data[$source] : null ;
         return $item;
@@ -239,6 +244,17 @@ class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface 
     function isSwapped() {
         return $this->swapped;
     }
+
+    /**
+     * overall method that switch between source and target languages & flip data and change its state once
+     * @return void
+     */
+    function switchLanguages() {
+        $this->swapLanguages();
+        $this->swapState();
+        $this->flipData();
+    }
+
 }
 
 

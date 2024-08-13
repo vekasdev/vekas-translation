@@ -124,6 +124,11 @@ class JsonFIleLangHandlerTest extends TestCase {
         return $handler;
     }
 
+    function testSwitchLanguageOverallMethod() {
+        $this->jsonFileLangHandler->switchLanguages();
+        $result = $this->jsonFileLangHandler->getItem("شيء"); 
+        $this->assertNotNull($result);
+    }
 
 
 
