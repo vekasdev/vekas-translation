@@ -3,6 +3,7 @@
 
 namespace Vekas\Translation;
 
+use Vekas\Translation\Interfaces\LanguagePairInterface;
 use Vekas\Translation\Exceptions\InvalidLanguageValueException;
 use Vekas\Translation\Interfaces\DictionaryInterface;
 use Vekas\Translation\Interfaces\LangHandlerInterface;
@@ -26,8 +27,7 @@ class Dictionary  implements DictionaryInterface {
     private array $items = [] ;
 
     /**
-     * @param LangHandlerInterface $languageService 
-     * @param LanguageValidator $languageValidator
+     * @param LangHandlerInterface | LanguagePairInterface $languageService 
      */
     function __construct(
         private  $languageService,
@@ -67,6 +67,13 @@ class Dictionary  implements DictionaryInterface {
     }
 
     function validateLang($text) {
-        if (!$this->languageValidator->validate($text)) throw new InvalidLanguageValueException;
+        $source = $this->languageService->getSourceLang(); // en , es , ar
+        /** @var LanguageValidator */
+        $validator = call_user_func_array($this->languageValidator,[$source]);
+        if (!$validator->validate($text)) throw new InvalidLanguageValueException;
+    }
+
+    function switchLanguages() {
+        $this->languageService->switchLanguages();
     }
 }

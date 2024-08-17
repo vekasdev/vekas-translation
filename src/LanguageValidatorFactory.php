@@ -30,6 +30,19 @@ class LanguageValidatorFactory {
 
         throw new InvalidArgumentException("you must provide existed class name in parameter `class` ");
     }
+
+    static function getValidatorByCode($code) {
+        switch($code) {
+            case "en" :
+                return static::getEnglishValidator();
+            case "ar" : 
+                return static::getArabicValidator();
+            case "es" : 
+                return static::getSpanishValidator();
+            default : 
+                throw new InvalidArgumentException("$code must be registered country code");
+        }
+    }
     
     static function getEnglishValidator() {
         return self::getValidator(EnglishValidator::class);

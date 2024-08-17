@@ -24,3 +24,13 @@ solution : make it on dictionery class to be passed as dependencies to it altoge
 
 
 - handle the case when the user look for not exactly data to translate but part of it ( in phrases ) the programme should find the closest translation for it
+
+- in dictionary interface findOpposit when not exist must return null instead of stirng in annotations
+
+- make class that handle auto-detect language and translate based on it
+
+- make ability to translate phrases not only word ... !
+
+- make one function in dictionary that swap two language and test it
+
+- test and implement the new updates of making dictionary switching its languages and validate it alogside with the source language and fill the missing in tests in the application

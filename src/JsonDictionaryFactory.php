@@ -21,12 +21,15 @@ class JsonDictionaryFactory {
         if ($source == $target) {
             return new NullDictionary;
         }
-        $validator = self::getValidator($source);
+        
         $jsonFileLangHandler = new JsonFileLangHandler($directory,$separator,$source,$target);
-        $dictionery = new Dictionary($jsonFileLangHandler,$validator);
+        $dictionery = new Dictionary($jsonFileLangHandler,[LanguageValidatorFactory::class,"getValidatorByCode"]);
         return $dictionery;
     }
     
+    /**
+     * @deprecated 
+     */
     static private function getValidator($type) {
         $languageValidator = null;
         switch ($type) {

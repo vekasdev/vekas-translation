@@ -52,8 +52,8 @@ class JsonFIleLangHandlerTest extends TestCase {
 
     function testLanguageNotSwappedByDefault() {
         $this->assertNotTrue( $this->jsonFileLangHandler->isSwapped());
-        $this->assertSame("en",$this->jsonFileLangHandler->getSource());
-        $this->assertSame("ar",$this->jsonFileLangHandler->getTarget());
+        $this->assertSame("en",$this->jsonFileLangHandler->getSourceLang());
+        $this->assertSame("ar",$this->jsonFileLangHandler->getTargetLang());
     }
 
     function testSwapingLanguage() {
@@ -61,16 +61,16 @@ class JsonFIleLangHandlerTest extends TestCase {
         $this->jsonFileLangHandler->swapState();
         
         $this->assertTrue( $this->jsonFileLangHandler->isSwapped());
-        $this->assertSame("ar",$this->jsonFileLangHandler->getSource());
-        $this->assertSame("en",$this->jsonFileLangHandler->getTarget());
+        $this->assertSame("ar",$this->jsonFileLangHandler->getSourceLang());
+        $this->assertSame("en",$this->jsonFileLangHandler->getTargetLang());
     }
 
     function testSwappingTwice() {
         $this->jsonFileLangHandler->swapLanguages();
         $this->jsonFileLangHandler->swapLanguages();
         $this->assertNotTrue( $this->jsonFileLangHandler->isSwapped());
-        $this->assertSame("en",$this->jsonFileLangHandler->getSource());
-        $this->assertSame("ar",$this->jsonFileLangHandler->getTarget());
+        $this->assertSame("en",$this->jsonFileLangHandler->getSourceLang());
+        $this->assertSame("ar",$this->jsonFileLangHandler->getTargetLang());
     }
 
     function testGetPathWhenSwapping() {

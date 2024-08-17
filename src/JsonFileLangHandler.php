@@ -1,13 +1,14 @@
 <?php
 namespace Vekas\Translation;
 
+use Vekas\Translation\Interfaces\LanguagePairInterface;
 use PhpParser\JsonDecoder;
 use Vekas\Translation\Exceptions\FileNotExistException;
 use Vekas\Translation\Exceptions\ItemAlreadyExistException;
 use Vekas\Translation\Interfaces\LangLoaderInterface;
 use Vekas\Translation\Interfaces\LanguagePairSupportInterface;
 use Vekas\Translation\Interfaces\LangHandlerInterface;
-class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface  {
+class JsonFileLangHandler implements  LangHandlerInterface , LanguagePairInterface {
     private $data = [];
 
     private $swapped = false;
@@ -76,11 +77,11 @@ class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface 
     }
 
 
-    function getSource() {
+    function getSourceLang() {
         return $this->source;
     }
 
-    function getTarget() {
+    function getTargetLang() {
         return $this->target;
     }
 
@@ -256,8 +257,3 @@ class JsonFileLangHandler implements LangLoaderInterface , LangHandlerInterface 
     }
 
 }
-
-
-
-// if i have en2ar.json  => the search must be s -> en  t -> ar
-// if the user want the opposit like => s -> ar   t-> en

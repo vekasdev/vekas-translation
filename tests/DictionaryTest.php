@@ -18,11 +18,14 @@ class DictionaryTest extends TestCase {
     private Dictionary $dictionary ;
     function setUp(): void {
 
-        $jsonFileLangHandler = $this->createMock(JsonFileLangHandler::class);
-        $jsonFileLangHandler->method("getItem")->willReturn("translated");
-        $languageValidator = (new LanguageValidatorFactory)->getValidator(EnglishValidator::class);
+        // $jsonFileLangHandler = $this->createMock(JsonFileLangHandler::class);
+        // $jsonFileLangHandler->method("getItem")->willReturn("translated");
+        // $jsonFileLangHandler->method("getSourceLang")->willReturn("en");
+        // $jsonFileLangHandler->method("getTargetLang")->willReturn("ar");
 
-        $dictionary = new Dictionary($jsonFileLangHandler,$languageValidator);
+        $jsonFileLangHandler = new JsonFileLangHandler(__DIR__."/dics","2","en","ar");
+
+        $dictionary = new Dictionary($jsonFileLangHandler,[LanguageValidatorFactory::class,"getValidatorByCode"]);
 
         $this->dictionary = $dictionary;
     }
@@ -32,20 +35,35 @@ class DictionaryTest extends TestCase {
         $this->assertInstanceOf(Dictionary::class,$this->dictionary);
     }
 
-    function testTranslateWord() {
-        $translated = $this->dictionary->findOpposit("translated");
-        $this->assertNotNull($translated);
+
+    function testGetLanguageService() {
+        $lservice = $this->dictionary->getLanguageService();
+        $this->assertNotNull($lservice);
+    }
+    
+    function testGetSourceLanguage() {
+        $sourceLang = $this->dictionary->getLanguageService()->getSourceLang();
+        $this->assertNotNull($sourceLang);
     }
 
 
+    function testTranslateWord() {
+        $translated = $this->dictionary->findOpposit("thing");
+        $this->assertNotNull($translated);
+    }
+
+    
     function testAddNewItem() {
         /** @var MockObject */
         $languageService =  $this->dictionary->getLanguageService();
-        
-        $languageService->expects($this->once())
-            ->method("addItem");
 
         $this->dictionary->addItem("mama","امي");
+
+        $word = $this->dictionary->findOpposit("mama");
+
+        $this->assertNotNull($word);
+
+        $this->dictionary->removeItem("mama");
     }
 
     function testThrowExceptionWhenOtherLanguageSet() {
@@ -61,4 +79,21 @@ class DictionaryTest extends TestCase {
 
     }
 
+    function testThrowInvalidLanguageValueException() {
+        $this->expectException(InvalidLanguageValueException::class);
+        $this->dictionary->findOpposit("مرحبا");
+    }
+
+    function testSwapLanguagesAndValidateThemAutomaticly() {
+        $this->dictionary->switchLanguages();
+        $translated = $this->dictionary->findOpposit("شيء");
+        $this->assertSame("thing",$translated);
+    }
+
+    function testValidateTheOtherLanguageWhenSwitching() {
+        $this->dictionary->switchLanguages();
+        $this->expectException(InvalidLanguageValueException::class);
+        $this->dictionary->findOpposit("something");
+    }
+    
 }
