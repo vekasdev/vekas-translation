@@ -3,6 +3,7 @@
 namespace Vekas\Translation;
 
 use InvalidArgumentException;
+use Language;
 use Vekas\Translation\LanguageValidator;
 use Vekas\Translation\LanguageValidators\ArabicValidator;
 use Vekas\Translation\LanguageValidators\EnglishValidator;
@@ -10,6 +11,9 @@ use Vekas\Translation\LanguageValidators\SpanishValidator;
 
 class LanguageValidatorFactory {
     
+
+    static $validators = [];
+
     static function getValidator($class) : LanguageValidator{
         if ( class_exists($class) ) {
             $reflection = new \ReflectionClass($class);
@@ -31,17 +35,25 @@ class LanguageValidatorFactory {
         throw new InvalidArgumentException("you must provide existed class name in parameter `class` ");
     }
 
+    /**
+     * register validator in this class
+     * @param string $languageCode
+     * @param LanguageValidator $validator
+     * @return LanguageValidator | null
+     */
+    static function registerValidator($languageCode, $validator) {
+        if (! $validator instanceof LanguageValidator)  
+            throw new InvalidArgumentException("the language validator registered is not of a ".LanguageValidator::class," type");
+
+        self::$validators[$languageCode] = $validator;
+    }
+
+
     static function getValidatorByCode($code) {
-        switch($code) {
-            case "en" :
-                return static::getEnglishValidator();
-            case "ar" : 
-                return static::getArabicValidator();
-            case "es" : 
-                return static::getSpanishValidator();
-            default : 
-                throw new InvalidArgumentException("$code must be registered country code");
+        if ( array_key_exists($code,self::$validators) ) {
+            return self::$validators[$code];
         }
+        throw new InvalidArgumentException("language validator for code $code is not registered");
     }
     
     static function getEnglishValidator() {
@@ -54,6 +66,12 @@ class LanguageValidatorFactory {
     
     static function getSpanishValidator() {
         return self::getValidator(SpanishValidator::class);
+    }
+
+    static function loadValidators() {
+        self::registerValidator("ar", new ArabicValidator );
+        self::registerValidator("en", new EnglishValidator );
+        self::registerValidator("es", new SpanishValidator );
     }
 
     

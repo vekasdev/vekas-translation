@@ -25,6 +25,7 @@ class DictionaryTest extends TestCase {
 
         $jsonFileLangHandler = new JsonFileLangHandler(__DIR__."/dics","2","en","ar");
 
+        LanguageValidatorFactory::loadValidators();
         $dictionary = new Dictionary($jsonFileLangHandler,[LanguageValidatorFactory::class,"getValidatorByCode"]);
 
         $this->dictionary = $dictionary;
