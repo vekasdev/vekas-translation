@@ -4,12 +4,13 @@ namespace Vekas\Translation;
 
 use InvalidArgumentException;
 use Language;
+use Vekas\Translation\Interfaces\ValidatorConfigurableInterface;
 use Vekas\Translation\LanguageValidator;
 use Vekas\Translation\LanguageValidators\ArabicValidator;
 use Vekas\Translation\LanguageValidators\EnglishValidator;
 use Vekas\Translation\LanguageValidators\SpanishValidator;
 
-class LanguageValidatorFactory {
+class LanguageValidatorFactory  {
     
 
     static $validators = [];
@@ -34,6 +35,8 @@ class LanguageValidatorFactory {
 
         throw new InvalidArgumentException("you must provide existed class name in parameter `class` ");
     }
+    
+
 
     /**
      * register validator in this class
@@ -68,11 +71,17 @@ class LanguageValidatorFactory {
         return self::getValidator(SpanishValidator::class);
     }
 
+
     static function loadValidators() {
-        self::registerValidator("ar", new ArabicValidator );
-        self::registerValidator("en", new EnglishValidator );
-        self::registerValidator("es", new SpanishValidator );
+        $validators = require(__DIR__."/validators.php");
+        foreach($validators as $validatorName => $validatorClass ) {
+            self::registerValidator($validatorName,$validatorClass);
+        }
+        return self::class;
     }
 
     
 }
+
+
+LanguageValidatorFactory::loadValidators();

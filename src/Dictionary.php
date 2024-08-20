@@ -25,14 +25,18 @@ trait DictioneryTestLogic {
 class Dictionary  implements DictionaryInterface {
     use DictioneryTestLogic;
     private array $items = [] ;
-
+    private $languageDetector;
     /**
      * @param LangHandlerInterface | LanguagePairInterface $languageService 
+     * @param LanguageDetectorFactory $languageDetectorFactory
      */
     function __construct(
         private  $languageService,
-        private  $languageValidator
-    ) {}
+        private  $languageValidatorFactory,
+        $languageDetectorFactory
+    ) {
+        $this->languageDetector = $languageDetectorFactory->make();
+    }
     
     /**
      * @inheritDoc
@@ -69,8 +73,17 @@ class Dictionary  implements DictionaryInterface {
     function validateLang($text) {
         $source = $this->languageService->getSourceLang(); // en , es , ar
         /** @var LanguageValidator */
-        $validator = call_user_func_array($this->languageValidator,[$source]);
-        if (!$validator->validate($text)) throw new InvalidLanguageValueException;
+        $validator = call_user_func_array($this->languageValidatorFactory,[$source]);
+        if ( ! $validator->validate($text) )  { 
+            $detectedLanguage = $this->languageDetector->detect($text);
+            $throwableException = new InvalidLanguageValueException(
+                "you should pass a valid language value which is in case : " 
+                . $this->languageService->getSourceLang()
+            );
+            if ($detectedLanguage)
+                $throwableException->setDetectedLanguage($detectedLanguage);
+            throw $throwableException;
+        }
     }
 
     function switchLanguages() {

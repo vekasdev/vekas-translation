@@ -25,12 +25,23 @@ solution : make it on dictionery class to be passed as dependencies to it altoge
 
 - handle the case when the user look for not exactly data to translate but part of it ( in phrases ) the programme should find the closest translation for it
 
-- in dictionary interface findOpposit when not exist must return null instead of stirng in annotations
+
+- make one function in dictionary that swap two language and test it -- done
+
+- test and implement the new updates of making dictionary switching its languages and validate it alogside with the source language and fill the missing in tests in the application --done
+ 
+------------------------------------------------------------------------------------------------------------
+
+- in scenario of there is an item of arabic lang originally and the page wanted to translate en -> ar the app will throw wrong language value exception then the act is catch this error and return the same text or the exception wrong language should have method getDetectedLanguageType ( when throwing wrongLanguageValue 
+its advicable to get detected language and receive it to exception object data ) -------- done
+
+* write test for language detector and its working on the dictionary class  ------- done 
+
+
+- in dictionary interface findOpposit when not exist must return null instead of string in annotations 
 
 - make class that handle auto-detect language and translate based on it
 
 - make ability to translate phrases not only word ... !
 
-- make one function in dictionary that swap two language and test it
-
-- test and implement the new updates of making dictionary switching its languages and validate it alogside with the source language and fill the missing in tests in the application
+- make dictionary interface implements the two the languageHandlerInterface and LanguagePairInterface

@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Vekas\Translation\Dictionary;
 use Vekas\Translation\JsonDictionaryFactory;
@@ -12,6 +13,7 @@ use Vekas\Translation\Exceptions\InvalidLanguageValueException;
 use Vekas\Translation\Exceptions\ItemAlreadyExistException;
 use Vekas\Translation\LanguageValidatorFactory;
 use Vekas\Translation\LanguageValidators\EnglishValidator;
+use Vekas\Translation\LanguageDetectorFactory;
 
 #[CoversClass(Dictionary::class)]
 class DictionaryTest extends TestCase {
@@ -26,7 +28,14 @@ class DictionaryTest extends TestCase {
         $jsonFileLangHandler = new JsonFileLangHandler(__DIR__."/dics","2","en","ar");
 
         LanguageValidatorFactory::loadValidators();
-        $dictionary = new Dictionary($jsonFileLangHandler,[LanguageValidatorFactory::class,"getValidatorByCode"]);
+
+        $languageDetectorFactory = new LanguageDetectorFactory();
+
+        $dictionary = new Dictionary(
+            $jsonFileLangHandler,
+            [LanguageValidatorFactory::class,"getValidatorByCode"],
+            $languageDetectorFactory
+        );
 
         $this->dictionary = $dictionary;
     }
@@ -96,5 +105,28 @@ class DictionaryTest extends TestCase {
         $this->expectException(InvalidLanguageValueException::class);
         $this->dictionary->findOpposit("something");
     }
+    
+    function testDetectTheWrongLanguageByException() {
+
+        // source ar
+        $this->dictionary->switchLanguages();
+        try {
+            $this->dictionary->findOpposit("something");
+        } catch (InvalidLanguageValueException $e) {
+            $detectedLanguage =  $e->getDetectedLanguage();
+            $this->assertSame("en",$detectedLanguage);
+        }
+
+        // source => en
+        $this->dictionary->switchLanguages();
+        try {
+            $this->dictionary->findOpposit("مرحبا يا اصدقاء");
+        } catch (InvalidLanguageValueException $e) {
+            $detectedLanguage =  $e->getDetectedLanguage();
+            $this->assertSame("ar",$detectedLanguage);
+        }
+        
+    }
+    
     
 }
