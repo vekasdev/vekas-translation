@@ -32,4 +32,8 @@ class NullDictionary implements DictionaryInterface {
     public function addItem($source, $target, $force = false) {
         
     }
+
+    function switchLanguages() {
+        
+    }
 }

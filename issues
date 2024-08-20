@@ -45,3 +45,6 @@ its advicable to get detected language and receive it to exception object data )
 - make ability to translate phrases not only word ... !
 
 - make dictionary interface implements the two the languageHandlerInterface and LanguagePairInterface
+* and make the nullDictionary implement it and to be the same like other dictionaries
+
+-
