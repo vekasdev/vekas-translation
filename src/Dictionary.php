@@ -29,6 +29,7 @@ class Dictionary  implements DictionaryInterface {
     /**
      * @param LangHandlerInterface | LanguagePairInterface $languageService 
      * @param LanguageDetectorFactory $languageDetectorFactory
+     * @param $languageValidatorFactory
      */
     function __construct(
         private  $languageService,
@@ -51,7 +52,10 @@ class Dictionary  implements DictionaryInterface {
      */
     function findOpposit($item) {
         $this->validateLang($item);
-        return $this->languageService->getItem($item);
+        if($this->isNonChar($item)) {
+            return $item;
+        }
+        return $this->languageService->getItem( strtolower( $item ) );
     }
 
     /**
@@ -59,7 +63,7 @@ class Dictionary  implements DictionaryInterface {
      */
     function removeItem($item) {
         $this->validateLang($item);
-        return $this->languageService->removeItem($item);
+        return $this->languageService->removeItem( strtolower( $item ) );
     }
 
     /**
@@ -70,23 +74,41 @@ class Dictionary  implements DictionaryInterface {
         $this->languageService->addItem( strtolower( $source ) , $target,$force );
     }
 
+
+    // there is intention to replace validation with using only language detector
     function validateLang($text) {
-        $source = $this->languageService->getSourceLang(); // en , es , ar
-        /** @var LanguageValidator */
-        $validator = call_user_func_array($this->languageValidatorFactory,[$source]);
-        if ( ! $validator->validate($text) )  { 
-            $detectedLanguage = $this->languageDetector->detect($text);
+
+        $source = $this->languageService->getSourceLang(); // en , es , ar ... ect
+
+        $detectedLanguage = $this->languageDetector->detect($text); // en , es , ar ... ect
+
+        if ( $source != $detectedLanguage ) 
+        {
             $throwableException = new InvalidLanguageValueException(
                 "you should pass a valid language value which is in case : " 
-                . $this->languageService->getSourceLang()
+                . $this->languageService->getSourceLang() . " , you passed " . $detectedLanguage
             );
-            if ($detectedLanguage)
-                $throwableException->setDetectedLanguage($detectedLanguage);
+            $throwableException->setDetectedLanguage($detectedLanguage);
+            
             throw $throwableException;
         }
+
+        return true;
+
+}
+
+    function isNonChar($string) {
+        return !! preg_match("/[!.]+/",$string);
     }
 
     function switchLanguages() {
         $this->languageService->switchLanguages();
     }
+
+    function getLanguageService()
+    {
+        return $this->languageService;
+    }
+
+
 }

@@ -127,6 +127,11 @@ class DictionaryTest extends TestCase {
         }
         
     }
+
+    function testCheckOfNonCharsLetters() {
+        $result = $this->dictionary->isNonChar(".");
+        $this->assertTrue($result);
+    }
     
     
 }

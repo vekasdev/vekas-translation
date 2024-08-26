@@ -13,4 +13,8 @@ interface DictionaryInterface  {
 
     function switchLanguages();
 
+    /**
+     * @return LanguagePairInterface | LangHandlerInterface
+     */
+    function getLanguageService();
 }
