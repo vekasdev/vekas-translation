@@ -8,7 +8,9 @@ use Vekas\Translation\Exceptions\ItemAlreadyExistException;
 use Vekas\Translation\Interfaces\LangLoaderInterface;
 use Vekas\Translation\Interfaces\LanguagePairSupportInterface;
 use Vekas\Translation\Interfaces\LangHandlerInterface;
-class JsonFileLangHandler implements  LangHandlerInterface , LanguagePairInterface {
+use Vekas\Translation\Interfaces\LanguageTogglerInterface;
+
+class JsonFileLangHandler implements  LangHandlerInterface , LanguagePairInterface , LanguageTogglerInterface{
     private $data = [];
 
     private $swapped = false;
@@ -250,10 +252,14 @@ class JsonFileLangHandler implements  LangHandlerInterface , LanguagePairInterfa
      * overall method that switch between source and target languages & flip data and change its state once
      * @return void
      */
-    function switchLanguages() {
+    function switchLanguage() {
         $this->swapLanguages();
         $this->swapState();
         $this->flipData();
+    }
+
+    function isSwitched() {
+        return $this->swapped;
     }
 
 }

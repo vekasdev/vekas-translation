@@ -8,7 +8,7 @@ use Vekas\Translation\Exceptions\InvalidLanguageValueException;
 use Vekas\Translation\Interfaces\DictionaryInterface;
 use Vekas\Translation\Interfaces\LangHandlerInterface;
 use Vekas\Translation\Interfaces\LangLoaderInterface;
-
+use Vekas\Translation\Interfaces\LanguageTogglerInterface;
 
 trait DictioneryTestLogic {
     function getLanguageService() {
@@ -26,8 +26,11 @@ class Dictionary  implements DictionaryInterface {
     use DictioneryTestLogic;
     private array $items = [] ;
     private $languageDetector;
+
+    private $flipped;
+
     /**
-     * @param LangHandlerInterface | LanguagePairInterface $languageService 
+     * @param LangHandlerInterface | LanguagePairInterface | LanguageTogglerInterface $languageService 
      * @param LanguageDetectorFactory $languageDetectorFactory
      * @param $languageValidatorFactory
      */
@@ -94,20 +97,24 @@ class Dictionary  implements DictionaryInterface {
         }
 
         return true;
-
 }
 
     function isNonChar($string) {
         return !! preg_match("/[!.]+/",$string);
     }
 
-    function switchLanguages() {
-        $this->languageService->switchLanguages();
-    }
 
     function getLanguageService()
     {
         return $this->languageService;
+    }
+
+    function switchLanguage() {
+        $this->languageService->switchLanguage();
+    }
+
+    function isSwitched() {
+        return $this->languageService->isSwitched();
     }
 
 

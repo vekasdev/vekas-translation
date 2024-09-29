@@ -49,7 +49,7 @@ class VekasTranslator implements TranslateAdapterInterface {
     }
 
     function switchLanguages() {
-        $this->dictionary->switchLanguages();
+        $this->dictionary->switchLanguage();
     }
     
 }

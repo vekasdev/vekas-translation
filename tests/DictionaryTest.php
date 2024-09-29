@@ -95,13 +95,13 @@ class DictionaryTest extends TestCase {
     }
 
     function testSwapLanguagesAndValidateThemAutomaticly() {
-        $this->dictionary->switchLanguages();
+        $this->dictionary->switchLanguage();
         $translated = $this->dictionary->findOpposit("شيء");
         $this->assertSame("thing",$translated);
     }
 
     function testValidateTheOtherLanguageWhenSwitching() {
-        $this->dictionary->switchLanguages();
+        $this->dictionary->switchLanguage();
         $this->expectException(InvalidLanguageValueException::class);
         $this->dictionary->findOpposit("something");
     }
@@ -109,7 +109,7 @@ class DictionaryTest extends TestCase {
     function testDetectTheWrongLanguageByException() {
 
         // source ar
-        $this->dictionary->switchLanguages();
+        $this->dictionary->switchLanguage();
         try {
             $this->dictionary->findOpposit("something");
         } catch (InvalidLanguageValueException $e) {
@@ -118,7 +118,7 @@ class DictionaryTest extends TestCase {
         }
 
         // source => en
-        $this->dictionary->switchLanguages();
+        $this->dictionary->switchLanguage();
         try {
             $this->dictionary->findOpposit("مرحبا يا اصدقاء");
         } catch (InvalidLanguageValueException $e) {
@@ -133,5 +133,23 @@ class DictionaryTest extends TestCase {
         $this->assertTrue($result);
     }
     
+    function testTheStateOfSwitchingLanguagesDynamiclySet() {
+        $dictionary = $this->getSwitchedJsonDictionary();
+        $this->assertTrue($dictionary->isSwitched());
+    }
     
+
+    function getSwitchedJsonDictionary() {
+        $jsonFileLangHandler = new JsonFileLangHandler(__DIR__."/dics","2","ar","en");
+
+        LanguageValidatorFactory::loadValidators();
+
+        $languageDetectorFactory = new LanguageDetectorFactory();
+
+        return new Dictionary(
+            $jsonFileLangHandler,
+            [LanguageValidatorFactory::class,"getValidatorByCode"],
+            $languageDetectorFactory
+        );
+    }
 }

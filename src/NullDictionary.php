@@ -43,4 +43,12 @@ class NullDictionary implements DictionaryInterface {
     function getLanguageService() {
         return null;
     }
+
+    function isSwitched() {
+        return false;
+    }
+
+    function switchLanguage() {
+        
+    }
 }

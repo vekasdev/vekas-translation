@@ -48,3 +48,31 @@ its advicable to get detected language and receive it to exception object data )
 * and make the nullDictionary implement it and to be the same like other dictionaries
 
 -
+
+
+
+
+* make getter function for anguage detector in dictionary
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
