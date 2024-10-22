@@ -11,6 +11,7 @@ use Vekas\Translation\Interfaces\LangHandlerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Vekas\Translation\Exceptions\InvalidLanguageValueException;
 use Vekas\Translation\Exceptions\ItemAlreadyExistException;
+use Vekas\Translation\Interfaces\LanguageDetectorInterface;
 use Vekas\Translation\LanguageValidatorFactory;
 use Vekas\Translation\LanguageValidators\EnglishValidator;
 use Vekas\Translation\LanguageDetectorFactory;
@@ -139,6 +140,10 @@ class DictionaryTest extends TestCase {
     }
     
 
+    function testGetLanguageDetector() {
+        $this->assertInstanceOf(LanguageDetectorInterface::class,$this->dictionary->getLanguageDetector());
+    }
+    
     function getSwitchedJsonDictionary() {
         $jsonFileLangHandler = new JsonFileLangHandler(__DIR__."/dics","2","ar","en");
 
@@ -152,4 +157,5 @@ class DictionaryTest extends TestCase {
             $languageDetectorFactory
         );
     }
+
 }

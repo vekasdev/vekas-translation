@@ -3,7 +3,7 @@
 namespace Vekas\Translation\Interfaces;
 use Vekas\Translation\Exceptions\InvalidLanguageValueException;
 
-interface DictionaryInterface  extends LanguageTogglerInterface {
+interface DictionaryInterface  extends LanguageTogglerInterface ,LanguageServiceProviderInterface{
 
     function findOpposit($item) ;
 
@@ -11,8 +11,4 @@ interface DictionaryInterface  extends LanguageTogglerInterface {
 
     function addItem($source,$target,$force = false);
 
-    /**
-     * @return LanguagePairInterface | LangHandlerInterface
-     */
-    function getLanguageService();
 }

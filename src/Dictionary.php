@@ -117,5 +117,9 @@ class Dictionary  implements DictionaryInterface {
         return $this->languageService->isSwitched();
     }
 
+    function getLanguageDetector(){
+        return $this->getLanguageDetector();
+    }
+
 
 }
