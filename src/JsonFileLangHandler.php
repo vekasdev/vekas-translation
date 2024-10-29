@@ -65,20 +65,6 @@ class JsonFileLangHandler implements  LangHandlerInterface , LanguagePairInterfa
         return $this->data; 
     }
 
-
-    function findMappings() {
-        $mappings = glob($this->directory."/*.json");
-
-        foreach ( $mappings as &$mapping ) {
-            $mapping = $this->getMappingInfo(
-                basename($mapping)
-            );
-        }
-
-        return $mappings ? $mappings : [];
-    }
-
-
     function getSourceLang() {
         return $this->source;
     }
@@ -87,19 +73,6 @@ class JsonFileLangHandler implements  LangHandlerInterface , LanguagePairInterfa
         return $this->target;
     }
 
-
-    function getMappingInfo($fileName) {
-        $fileName = rtrim($fileName,".json");
-        $data = explode($this->separator,$fileName);
-
-        $source = $data[0];
-        $target = end($data);
-
-        return [
-          "sourceLanguage" => $source,
-          "targetLanguage" => $target
-        ];
-    }
 
     function getFileName($filePath) {
         return basename($filePath);

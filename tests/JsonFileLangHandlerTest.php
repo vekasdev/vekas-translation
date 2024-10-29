@@ -23,27 +23,6 @@ class JsonFIleLangHandlerTest extends TestCase {
     }
 
 
-    function testFindMappingFiles() {
-        $mappings = $this->jsonFileLangHandler->findMappings();
-        $this->assertSame($mappings,[
-            [
-                "sourceLanguage" => "en",
-                "targetLanguage" => "ar"
-            ]
-        ]);
-    }
-
-
-
-    function testGetMappingInfo(){ 
-        $result = $this->jsonFileLangHandler->getMappingInfo("en2ar.json");
-
-        $this->assertSame([
-            "sourceLanguage" => "en",
-            "targetLanguage" => "ar"
-        ],$result);
-    }
-
     function testGetFileNameByPath() {
         $result = $this-> jsonFileLangHandler->getFileName("myage/mainfolder/index.php");
         $this->assertSame("index.php",$result);
