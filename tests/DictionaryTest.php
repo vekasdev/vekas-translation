@@ -139,7 +139,6 @@ class DictionaryTest extends TestCase {
         $this->assertTrue($dictionary->isSwitched());
     }
     
-
     function testGetLanguageDetector() {
         $this->assertInstanceOf(LanguageDetectorInterface::class,$this->dictionary->getLanguageDetector());
     }

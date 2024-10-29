@@ -25,17 +25,23 @@ class JsonDictionaryFactory {
         $jsonFileLangHandler = new JsonFileLangHandler($directory,$separator,$source,$target);
         LanguageValidatorFactory::loadValidators();
 
-        $languageDetectorFactory = new LanguageDetectorFactory();
         
         $dictionery = new Dictionary(
             $jsonFileLangHandler,
-            [LanguageValidatorFactory::class,"getValidatorByCode"],
-            $languageDetectorFactory
+            new LanguageDetectorFactory()
         );
 
         return $dictionery;
     }
+
+    static function setSeparator() {
+
+    }
     
+    static function setDirectory() {
+        
+    }
+
     /**
      * @deprecated 
      */

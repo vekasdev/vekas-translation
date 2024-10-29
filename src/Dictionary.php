@@ -11,6 +11,9 @@ use Vekas\Translation\Interfaces\LangLoaderInterface;
 use Vekas\Translation\Interfaces\LanguageTogglerInterface;
 
 trait DictioneryTestLogic {
+    /**
+     * @return LangHandlerInterface | LanguagePairInterface | LanguageTogglerInterface
+     */
     function getLanguageService() {
         return $this->languageService;
     }
@@ -24,19 +27,16 @@ trait DictioneryTestLogic {
  */
 class Dictionary  implements DictionaryInterface {
     use DictioneryTestLogic;
-    private array $items = [] ;
     private $languageDetector;
 
     private $flipped;
 
     /**
-     * @param LangHandlerInterface | LanguagePairInterface | LanguageTogglerInterface $languageService 
+     * @param LangHandlerInterface | LanguagePairInterface | LanguageTogglerInterface | null | string $languageService 
      * @param LanguageDetectorFactory $languageDetectorFactory
-     * @param $languageValidatorFactory
      */
     function __construct(
-        private  $languageService,
-        private  $languageValidatorFactory,
+        private  $languageService = null,
         $languageDetectorFactory
     ) {
         $this->languageDetector = $languageDetectorFactory->make();
@@ -58,7 +58,7 @@ class Dictionary  implements DictionaryInterface {
         if($this->isNonChar($item)) {
             return $item;
         }
-        return $this->languageService->getItem( strtolower( $item ) );
+        return $this->getLanguageService()->getItem( strtolower( $item ) );
     }
 
     /**
@@ -66,7 +66,7 @@ class Dictionary  implements DictionaryInterface {
      */
     function removeItem($item) {
         $this->validateLang($item);
-        return $this->languageService->removeItem( strtolower( $item ) );
+        return $this->getLanguageService()->removeItem( strtolower( $item ) );
     }
 
     /**
@@ -74,14 +74,14 @@ class Dictionary  implements DictionaryInterface {
      */
     function addItem($source, $target,$force = false) {
         $this->validateLang($source);
-        $this->languageService->addItem( strtolower( $source ) , $target,$force );
+        $this->getLanguageService()->addItem( strtolower( $source ) , $target,$force );
     }
 
 
     // there is intention to replace validation with using only language detector
     function validateLang($text) {
 
-        $source = $this->languageService->getSourceLang(); // en , es , ar ... ect
+        $source = $this->getLanguageService()->getSourceLang(); // en , es , ar ... ect
 
         $detectedLanguage = $this->languageDetector->detect($text); // en , es , ar ... ect
 
@@ -97,7 +97,7 @@ class Dictionary  implements DictionaryInterface {
         }
 
         return true;
-}
+    }
 
     function isNonChar($string) {
         return !! preg_match("/[!.]+/",$string);
@@ -110,16 +110,21 @@ class Dictionary  implements DictionaryInterface {
     }
 
     function switchLanguage() {
-        $this->languageService->switchLanguage();
+        $this->getLanguageService()->switchLanguage();
     }
 
     function isSwitched() {
-        return $this->languageService->isSwitched();
+        return $this->getLanguageService()->isSwitched();
     }
 
     function getLanguageDetector(){
-        return $this->getLanguageDetector();
+        return $this->languageDetector;
     }
 
+    private function setLanguageService(LangHandlerInterface | LanguagePairInterface | LanguageTogglerInterface $service) {
+        $this->languageService = $service;
+    }
+
+ 
 
 }
