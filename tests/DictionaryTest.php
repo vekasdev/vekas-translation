@@ -34,7 +34,6 @@ class DictionaryTest extends TestCase {
 
         $dictionary = new Dictionary(
             $jsonFileLangHandler,
-            [LanguageValidatorFactory::class,"getValidatorByCode"],
             $languageDetectorFactory
         );
 
@@ -153,7 +152,6 @@ class DictionaryTest extends TestCase {
 
         return new Dictionary(
             $jsonFileLangHandler,
-            [LanguageValidatorFactory::class,"getValidatorByCode"],
             $languageDetectorFactory
         );
     }

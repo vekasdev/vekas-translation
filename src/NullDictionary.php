@@ -51,4 +51,8 @@ class NullDictionary implements DictionaryInterface {
     function switchLanguage() {
         
     }
+
+    function getLanguageDetector() {
+        return (new LanguageDetectorFactory())->make();
+    }
 }

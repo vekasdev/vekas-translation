@@ -29,7 +29,6 @@ class JsonDictionaryFactory {
         
         $dictionery = new Dictionary(
             $jsonFileLangHandler,
-            [LanguageValidatorFactory::class,"getValidatorByCode"],
             $languageDetectorFactory
         );
 

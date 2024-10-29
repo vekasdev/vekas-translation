@@ -36,7 +36,6 @@ class Dictionary  implements DictionaryInterface {
      */
     function __construct(
         private  $languageService,
-        private  $languageValidatorFactory,
         $languageDetectorFactory
     ) {
         $this->languageDetector = $languageDetectorFactory->make();
@@ -118,7 +117,7 @@ class Dictionary  implements DictionaryInterface {
     }
 
     function getLanguageDetector(){
-        return $this->getLanguageDetector();
+        return $this->languageDetector;
     }
 
 
