@@ -153,6 +153,13 @@ class AutoDetectionDictionary extends Dictionary  {
         if ($this->getSourceLang() == null) {
             throw new IllegalStateException("you cannot switch language before the source language being detected");
         };
+
+        if ($this->getTargetLang() == null) {
+            throw new IllegalStateException("you have to set the target language firstly");
+        };
+
+        $this->getLanguageService(); // 
+
         // change the title of current service in the array keys
         $this->switchCurrentTitle();
 

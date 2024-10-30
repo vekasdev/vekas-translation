@@ -115,5 +115,13 @@ class AutoDetectionDtictionaryTest extends TestCase {
         $this->autoDictionary->switchLanguage();
     }
 
+    function testSwitchingLanguageBeforeMakeAnOperation() {
+        $this->autoDictionary->setSourceLang("en");
+        $this->autoDictionary->setTargetLang("ar");
 
+        $this->autoDictionary->switchLanguage();
+        $res = $this->autoDictionary->findOpposit("حمامة");
+        $this->assertSame("pigion",$res);
+
+    }
 }
