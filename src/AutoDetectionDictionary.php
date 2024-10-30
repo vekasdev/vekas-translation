@@ -114,7 +114,7 @@ class AutoDetectionDictionary extends Dictionary  {
     function setTargetLang($targetLang) {
         $this->targetLang = $targetLang;
     }
-    private function setSourceLang($sourceLang) {
+    function setSourceLang($sourceLang) {
         $this->sourceLang = $sourceLang;
     }
     
