@@ -5,6 +5,7 @@ namespace Vekas\Translation;
 
 use Vekas\Translation\Interfaces\DictionaryInterface;
 use ReflectionException;
+use Vekas\Translation\Exceptions\IllegalStateException;
 use Vekas\Translation\Exceptions\InvalidLanguageValueException;
 use Vekas\Translation\Interfaces\LanguageServiceFactoryInterface;
 use Vekas\Translation\Interfaces\LanguageServiceFactoryMethodInterface;
@@ -148,6 +149,10 @@ class AutoDetectionDictionary extends Dictionary  {
 
     function switchLanguage() {
 
+        // when try to switch and the source lang not filled
+        if ($this->getSourceLang() == null) {
+            throw new IllegalStateException("you cannot switch language before the source language being detected");
+        };
         // change the title of current service in the array keys
         $this->switchCurrentTitle();
 

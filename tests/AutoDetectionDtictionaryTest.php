@@ -4,6 +4,7 @@ namespace Vekas\Translation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Vekas\Translation\Exceptions\IllegalStateException;
 use Vekas\Translation\Exceptions\InvalidLanguageValueException;
 
 #[CoversClass(AutoDetectionDictionary::class)]
@@ -106,5 +107,13 @@ class AutoDetectionDtictionaryTest extends TestCase {
         $this->expectException(InvalidLanguageValueException::class);
         $this->autoDictionary->findOpposit("symfony"); // set source to en
     }
+
+
+    function testExpectThrowingIllegalStateException() {
+        $this->autoDictionary->setTargetLang("en");
+        $this->expectException(IllegalStateException::class);
+        $this->autoDictionary->switchLanguage();
+    }
+
 
 }
