@@ -8,9 +8,11 @@ use Vekas\Translation\Exceptions\ItemAlreadyExistException;
 use Vekas\Translation\Interfaces\LangLoaderInterface;
 use Vekas\Translation\Interfaces\LanguagePairSupportInterface;
 use Vekas\Translation\Interfaces\LangHandlerInterface;
+use Vekas\Translation\Interfaces\LanguageServiceHelperInterface;
+use Vekas\Translation\Interfaces\LanguageServiceInterface;
 use Vekas\Translation\Interfaces\LanguageTogglerInterface;
 
-class JsonFileLangHandler implements  LangHandlerInterface , LanguagePairInterface , LanguageTogglerInterface{
+class JsonFileLangHandler implements  LanguageServiceInterface {
     private $data = [];
 
     private $swapped = false;
@@ -19,7 +21,8 @@ class JsonFileLangHandler implements  LangHandlerInterface , LanguagePairInterfa
       private string $directory ,
       private string $separator = "" ,
       private string $source,
-      private string $target
+      private string $target,
+      private LanguageServiceHelperInterface|null $helper = null
       ) {
         $this->load();
       }
@@ -234,5 +237,10 @@ class JsonFileLangHandler implements  LangHandlerInterface , LanguagePairInterfa
     function isSwitched() {
         return $this->swapped;
     }
+
+    function getHelper(){
+        return $this->helper;
+    }
+
 
 }

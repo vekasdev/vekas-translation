@@ -8,6 +8,7 @@ use Vekas\Translation\Exceptions\InvalidLanguageValueException;
 use Vekas\Translation\Interfaces\DictionaryInterface;
 use Vekas\Translation\Interfaces\LangHandlerInterface;
 use Vekas\Translation\Interfaces\LangLoaderInterface;
+use Vekas\Translation\Interfaces\LanguageServiceHelperInterface;
 use Vekas\Translation\Interfaces\LanguageTogglerInterface;
 
 trait DictioneryTestLogic {
@@ -104,6 +105,9 @@ class Dictionary  implements DictionaryInterface {
     }
 
 
+    /**
+     * @return LangHandlerInterface|LanguagePairInterface|LanguageTogglerInterface
+     */
     function getLanguageService()
     {
         return $this->languageService;

@@ -11,6 +11,7 @@ use Vekas\Translation\Interfaces\LanguageServiceFactoryInterface;
 use Vekas\Translation\Interfaces\LanguageServiceFactoryMethodInterface;
 use Vekas\Translation\Interfaces\LangHandlerInterface;
 use Vekas\Translation\Interfaces\LanguagePairInterface;
+use Vekas\Translation\Interfaces\LanguageServiceInterface;
 use Vekas\Translation\Interfaces\LanguageTogglerInterface;
 
 class AutoDetectionDictionary extends Dictionary  {
@@ -55,6 +56,7 @@ class AutoDetectionDictionary extends Dictionary  {
     /**
      * get the current service based on properties of sourcelang and target lang
      * if the language pair are reversed it revers the title and loop over the services
+     * @return LanguageServiceInterface | null
      */
     function getCurrentService() {
         $serviceKey = $this->sourceLang.$this->serviceTitleSeparator.$this->targetLang;

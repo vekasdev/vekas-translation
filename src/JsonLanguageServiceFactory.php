@@ -20,7 +20,7 @@ class JsonLanguageServiceFactory implements LanguageServiceFactoryMethodInterfac
             "must provide the directory of the languages mapping files"
         );
 
-        return new JsonFileLangHandler($directory,$separator,$sourceLang,$targetLang);
+        return new JsonFileLangHandler($directory,$separator,$sourceLang,$targetLang,self::$helper);
     }
     
     /**

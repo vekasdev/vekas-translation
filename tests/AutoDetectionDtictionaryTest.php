@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vekas\Translation\Exceptions\IllegalStateException;
 use Vekas\Translation\Exceptions\InvalidLanguageValueException;
+use Vekas\Translation\Interfaces\LanguageServiceHelperInterface;
 
 #[CoversClass(AutoDetectionDictionary::class)]
 class AutoDetectionDtictionaryTest extends TestCase {
@@ -123,6 +124,13 @@ class AutoDetectionDtictionaryTest extends TestCase {
         $this->autoDictionary->switchLanguage();
         $res = $this->autoDictionary->findOpposit("حمامة");
         $this->assertSame("pigion",$res);
+    }
 
+    function getLanguageHelper() {
+        $this->autoDictionary->setSourceLang("en");
+        $this->autoDictionary->setTargetLang("ar");
+
+        $helper = $this->autoDictionary->getCurrentService()->getHelper();
+        $this->assertInstanceOf(LanguageServiceHelperInterface::class , $helper);
     }
 }
