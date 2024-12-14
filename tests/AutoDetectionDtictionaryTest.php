@@ -12,8 +12,9 @@ class AutoDetectionDtictionaryTest extends TestCase {
     private AutoDetectionDictionary $autoDictionary;
     function setUp(): void{
 
-        JsonLanguageServiceFactory::setDirectory(__DIR__."/dics");
-        JsonLanguageServiceFactory::setSeparator("2");
+        JsonLanguageServiceFactory::setHelper(
+            new JsonLanguageServiceHelper(__DIR__."/dics","2")
+        );
 
         $this->autoDictionary = new AutoDetectionDictionary(
             JsonLanguageServiceFactory::class,

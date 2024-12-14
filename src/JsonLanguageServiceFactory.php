@@ -7,12 +7,14 @@ use Vekas\Translation\Interfaces\LanguageServiceFactoryInterface;
 use Vekas\Translation\Interfaces\LanguageServiceFactoryMethodInterface;
 
 class JsonLanguageServiceFactory implements LanguageServiceFactoryMethodInterface {
-    private static $separator = "2";
-    private static $directory ;
 
+    static JsonLanguageServiceHelper $helper;
+    /**
+     * @inheritDoc
+     */
     static function getLanguageService ( $sourceLang, $targetLang ) {
-        $directory = self::$directory;
-        $separator = self::$separator;
+        $directory = self::$helper->getDirectory();
+        $separator = self::$helper->getSeparator();
 
         if ( $directory == null ) throw new MissingConfigurationException(
             "must provide the directory of the languages mapping files"
@@ -20,13 +22,12 @@ class JsonLanguageServiceFactory implements LanguageServiceFactoryMethodInterfac
 
         return new JsonFileLangHandler($directory,$separator,$sourceLang,$targetLang);
     }
-
-    static function setSeparator($separator) {
-        static::$separator = $separator;
-    }
     
-    static function setDirectory($directory) {
-        static::$directory = $directory;
+    /**
+     * @param JsonLanguageServiceHelper $helper 
+     */
+    static function setHelper($helper) {
+        self::$helper = $helper;
     }
 
 }
