@@ -17,51 +17,20 @@ class JsonDictionaryFactory {
      * @param string $separator
      * @return DictionaryInterface
      */
-    static function  getDictionery( $directory,$source,$target,$separator = 2 ) {
+    static function  getDictionary( $directory,$source,$target,$separator = "2" ) {
         if ($source == $target) {
             return new NullDictionary;
         }
         
-        $jsonFileLangHandler = new JsonFileLangHandler($directory,$separator,$source,$target);
-        LanguageValidatorFactory::loadValidators();
+        $helper = new JsonLanguageHelper($directory,$separator);
+        $repository = new JsonLanguageRepository($helper);
 
-        
-        $dictionery = new Dictionary(
-            $jsonFileLangHandler,
-            new LanguageDetectorFactory()
+        JsonLanguageServiceFactory::setJsonLangRepository(
+            $repository
         );
-
-        return $dictionery;
-    }
-
-    static function setSeparator() {
-
-    }
-    
-    static function setDirectory() {
         
-    }
-
-    /**
-     * @deprecated 
-     */
-    static private function getValidator($type) {
-        $languageValidator = null;
-        switch ($type) {
-            case "en" :
-                $languageValidator = LanguageValidatorFactory::getEnglishValidator();
-                break;
-            case "ar" :
-                $languageValidator = LanguageValidatorFactory::getArabicValidator();
-                break;
-            case "es" :
-                $languageValidator = LanguageValidatorFactory::getSpanishValidator();
-                break;
-            default : 
-                throw new InvalidArgumentException("the language '". $type ."' are passed is not registered ");
-        }
-
-        return $languageValidator;
+         $service =  JsonLanguageServiceFactory::getLanguageService($source,$target);
+       return new Dictionary($service,new LanguageDetectorFactory());
     }
 
 }

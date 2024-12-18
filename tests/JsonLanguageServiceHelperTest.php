@@ -2,13 +2,13 @@
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vekas\Translation\JsonLanguageServiceHelper;
+use Vekas\Translation\JsonLanguageHelper;
 
-#[CoversClass(JsonLanguageServiceHelper::class)]
+#[CoversClass(JsonLanguageHelper::class)]
 class JsonLanguageServiceHelperTest extends TestCase {
-    private JsonLanguageServiceHelper $jsonLanguageServiceHelper;
+    private JsonLanguageHelper $jsonLanguageServiceHelper;
     function setUp(): void {
-        $this->jsonLanguageServiceHelper = new JsonLanguageServiceHelper(__DIR__."/dics","2");
+        $this->jsonLanguageServiceHelper = new JsonLanguageHelper(__DIR__."/dics","2");
     }
 
     function testGetMappings() {

@@ -14,17 +14,17 @@ class JsonDictionaryFactoryTest extends TestCase {
     }
 
     function testGetDictionaryByJsonDictionaryFactory() {
-        $dictionary = JsonDictionaryFactory::getDictionery(__DIR__."/dics","en","ar");
+        $dictionary = JsonDictionaryFactory::getDictionary(__DIR__."/dics","en","ar");
         $this->assertInstanceOf(Dictionary::class,$dictionary);
     }
 
     function testGetNotExistDictionary() {
         $this->expectException(FileNotExistException::class);
-        JsonDictionaryFactory::getDictionery(__DIR__."/dics","eu","ar");
+        JsonDictionaryFactory::getDictionary(__DIR__."/dics","eu","ar");
     }
     
     function testGetNullDictionaryWhenAskForSimilarLanguagePair() {
-        $dictionary = JsonDictionaryFactory::getDictionery(__DIR__."/dics","en","en");
+        $dictionary = JsonDictionaryFactory::getDictionary(__DIR__."/dics","en","en");
         $this->assertInstanceOf(NullDictionary::class,$dictionary);
     }
 

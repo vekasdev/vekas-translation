@@ -4,13 +4,17 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vekas\Translation\Exceptions\ItemAlreadyExistException;
 use Vekas\Translation\JsonFileLangHandler;
+use Vekas\Translation\JsonLanguageHelper;
+use Vekas\Translation\JsonLanguageRepository;
+use Vekas\Translation\JsonLanguageServiceFactory;
+use Vekas\Translation\ValidatorHelper;
 
 #[CoversClass(JsonFileLangHandler::class)]
 class JsonFIleLangHandlerTest extends TestCase {
     private JsonFileLangHandler $jsonFileLangHandler;
     
     function setUp(): void {
-        $this->jsonFileLangHandler = new JsonFileLangHandler(__DIR__."/dics","2","en","ar");
+        $this->jsonFileLangHandler = $this->getJsonLanguageService("en","ar");
     }
     function testThrowExceptionWhenTryAddExistedItem() {
         $this->jsonFileLangHandler->setData([
@@ -99,7 +103,7 @@ class JsonFIleLangHandlerTest extends TestCase {
 
 
     function loadSwappedVersionOfJsonFileHandler() {
-        $handler =  new JsonFileLangHandler(__DIR__."/dics","2","ar","en");
+        $handler = $this->getJsonLanguageService("ar","en");
         return $handler;
     }
 
@@ -110,5 +114,11 @@ class JsonFIleLangHandlerTest extends TestCase {
     }
 
 
+    function getJsonLanguageService($source,$target) {
+        $helper = new JsonLanguageHelper(__DIR__."/dics","2");
+        $repository = new JsonLanguageRepository($helper);
+        JsonLanguageServiceFactory::setJsonLangRepository($repository);
+        return JsonLanguageServiceFactory::getLanguageService($source,$target);
+    }
 
 }

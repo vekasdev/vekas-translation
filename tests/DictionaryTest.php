@@ -12,6 +12,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Vekas\Translation\Exceptions\InvalidLanguageValueException;
 use Vekas\Translation\Exceptions\ItemAlreadyExistException;
 use Vekas\Translation\Interfaces\LanguageDetectorInterface;
+use Vekas\Translation\JsonLanguageHelper;
+use Vekas\Translation\JsonLanguageRepository;
 use Vekas\Translation\LanguageValidatorFactory;
 use Vekas\Translation\LanguageValidators\EnglishValidator;
 use Vekas\Translation\LanguageDetectorFactory;
@@ -20,22 +22,7 @@ use Vekas\Translation\LanguageDetectorFactory;
 class DictionaryTest extends TestCase {
     private Dictionary $dictionary ;
     function setUp(): void {
-
-        // $jsonFileLangHandler = $this->createMock(JsonFileLangHandler::class);
-        // $jsonFileLangHandler->method("getItem")->willReturn("translated");
-        // $jsonFileLangHandler->method("getSourceLang")->willReturn("en");
-        // $jsonFileLangHandler->method("getTargetLang")->willReturn("ar");
-
-        $jsonFileLangHandler = new JsonFileLangHandler(__DIR__."/dics","2","en","ar");
-
-        LanguageValidatorFactory::loadValidators();
-
-        $dictionary = new Dictionary(
-            $jsonFileLangHandler,
-            new LanguageDetectorFactory()
-        );
-
-        $this->dictionary = $dictionary;
+        $this->dictionary = $this->getDictionary("en","ar");
     }
 
     
@@ -141,16 +128,11 @@ class DictionaryTest extends TestCase {
     }
     
     function getSwitchedJsonDictionary() {
-        $jsonFileLangHandler = new JsonFileLangHandler(__DIR__."/dics","2","ar","en");
+        return $this->getDictionary("ar","en");
+    }
 
-        LanguageValidatorFactory::loadValidators();
-
-        $languageDetectorFactory = new LanguageDetectorFactory();
-
-        return new Dictionary(
-            $jsonFileLangHandler,
-            $languageDetectorFactory
-        );
+    private function getDictionary($source,$target) {
+        return JsonDictionaryFactory::getDictionary(__DIR__."/dics",$source,$target);
     }
 
 }

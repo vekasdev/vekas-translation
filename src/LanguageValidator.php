@@ -8,4 +8,8 @@ abstract class LanguageValidator {
     function getLanguageType() : string {
         return $this->languageType;
     }
+
+    function getType() {
+        return $this->languageType;
+    }
 }

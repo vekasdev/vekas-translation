@@ -10,7 +10,7 @@ use Vekas\Translation\VekasTranslator;
 class VekasTranslatorTest extends TestCase {
     private VekasTranslator $vekasTranslator ;
     function setUp(): void {
-        $dictionary =  JsonDictionaryFactory::getDictionery(__DIR__."/dics","en","ar");
+        $dictionary =  JsonDictionaryFactory::getDictionary(__DIR__."/dics","en","ar");
         $this->vekasTranslator = new VekasTranslator($dictionary);
     }
 

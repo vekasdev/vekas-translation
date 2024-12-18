@@ -22,7 +22,7 @@ class JsonFileLangHandler implements  LanguageServiceInterface {
       private string $separator = "" ,
       private string $source,
       private string $target,
-      private LanguageServiceHelperInterface|null $helper = null
+      private JsonLanguageRepository $jsonLanguageRepository
       ) {
         $this->load();
       }
@@ -238,8 +238,9 @@ class JsonFileLangHandler implements  LanguageServiceInterface {
         return $this->swapped;
     }
 
-    function getHelper(){
-        return $this->helper;
+
+    function getRepository() {
+        return $this->jsonLanguageRepository;
     }
 
 

@@ -5,7 +5,7 @@ namespace Vekas\Translation;
 
 use Vekas\Translation\Interfaces\LanguageServiceHelperInterface;
 
-class JsonLanguageServiceHelper implements LanguageServiceHelperInterface {
+class JsonLanguageHelper implements LanguageServiceHelperInterface {
     private $directory = "";
     private $separator = "";
 

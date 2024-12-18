@@ -4,17 +4,18 @@
 namespace Vekas\Translation;
 
 use Vekas\Translation\Interfaces\ValidatorConfigurableInterface;
+use Vekas\Translation\Interfaces\ValidatorLoaderInterface;
 
-class ValidatorsLoader {
+class ValidatorsLoader implements ValidatorLoaderInterface {
     
 
     /**
-     * @param ValidatorConfigurableInterface $class 
+     * @param ValidatorConfigurableInterface $object 
      */
-    
-    static function load($class) {
+    static function load($object) : ValidatorConfigurableInterface {
         $validators = include(__DIR__."/validators.php");
-        $class->setValidators($validators);
-        return $class;
+        $object->setValidators($validators);
+        return $object;
     }
+    
 }

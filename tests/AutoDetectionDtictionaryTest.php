@@ -13,8 +13,11 @@ class AutoDetectionDtictionaryTest extends TestCase {
     private AutoDetectionDictionary $autoDictionary;
     function setUp(): void{
 
-        JsonLanguageServiceFactory::setHelper(
-            new JsonLanguageServiceHelper(__DIR__."/dics","2")
+        $helper = new JsonLanguageHelper(__DIR__."/dics","2");
+        $repository = new JsonLanguageRepository($helper);
+
+        JsonLanguageServiceFactory::setJsonLangRepository(
+            $repository
         );
 
         $this->autoDictionary = new AutoDetectionDictionary(
@@ -130,7 +133,10 @@ class AutoDetectionDtictionaryTest extends TestCase {
         $this->autoDictionary->setSourceLang("en");
         $this->autoDictionary->setTargetLang("ar");
 
-        $helper = $this->autoDictionary->getCurrentService()->getHelper();
+        /** @var JsonLanguageRepository */
+        $repository = $this->autoDictionary->getCurrentService()->getRepository();
+        $helper = $repository->getHelper();
+        
         $this->assertInstanceOf(LanguageServiceHelperInterface::class , $helper);
     }
 }
