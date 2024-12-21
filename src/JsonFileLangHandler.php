@@ -24,7 +24,7 @@ class JsonFileLangHandler implements  LanguageServiceInterface {
       private string $target,
       private JsonLanguageRepository $jsonLanguageRepository
       ) {
-        $this->load();
+        $this->data = $this->load();
       }
 
     /**
@@ -64,8 +64,7 @@ class JsonFileLangHandler implements  LanguageServiceInterface {
             $data = json_decode($file,true);
         }
 
-        $this->data = $data;
-        return $this->data; 
+        return $data; 
     }
 
     function getSourceLang() {
