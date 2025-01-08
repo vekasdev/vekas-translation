@@ -96,6 +96,7 @@ class JsonFIleLangHandlerTest extends TestCase {
 
 
     function testAddAndRemoveItem() {
+        $this->jsonFileLangHandler->setApproximityFeature(false);
         $this->jsonFileLangHandler->addItem("toy","لعبة");
         $this->jsonFileLangHandler->removeItem("toy");
         $this->assertNull($this->jsonFileLangHandler->getItem("toy"));
@@ -121,14 +122,36 @@ class JsonFIleLangHandlerTest extends TestCase {
             "goes" => "يذهب"
         ]);
 
-        $result = $this->jsonFileLangHandler->getItem("gos",true);
+        $this->jsonFileLangHandler->setApproximityFeature(true);
+
+        $result = $this->jsonFileLangHandler->getItem("gos");
         $this->assertSame("يذهب",$result);
 
-        $result = $this->jsonFileLangHandler->getItem("go",true);
+        $result = $this->jsonFileLangHandler->getItem("go");
         $this->assertSame("يذهب",$result);
 
-        $result = $this->jsonFileLangHandler->getItem("egt",true);
+        $result = $this->jsonFileLangHandler->getItem("egt");
         $this->assertSame("مصر",$result);
+    }
+
+
+    function testGettingItemsWithSnapFeatureAndSwitched() {
+        $this->jsonFileLangHandler->setData([
+            "egg" => "بيض",
+            "egypt" => "مصر",
+            "goes" => "يذهب"
+        ]);
+
+        $this->jsonFileLangHandler->setApproximityFeature(true);
+
+        $this->jsonFileLangHandler->switchLanguage();
+
+        $result = $this->jsonFileLangHandler->getItem("هب");
+        $this->assertSame("goes",$result);
+
+        $result = $this->jsonFileLangHandler->getItem("صر");
+        $this->assertSame("egypt",$result);
+        
     }
     
     function getJsonLanguageService($source,$target) {

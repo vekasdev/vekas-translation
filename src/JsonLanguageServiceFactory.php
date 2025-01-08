@@ -9,6 +9,9 @@ use Vekas\Translation\Interfaces\LanguageServiceFactoryMethodInterface;
 class JsonLanguageServiceFactory implements LanguageServiceFactoryMethodInterface {
 
     static JsonLanguageRepository $repository;
+
+    static bool $approximityFeature = false;
+
     /**
      * @inheritDoc
      */
@@ -20,13 +23,17 @@ class JsonLanguageServiceFactory implements LanguageServiceFactoryMethodInterfac
             "must provide the directory of the languages mapping files"
         );
 
-        return new JsonFileLangHandler(
+        $service = new JsonFileLangHandler(
             $directory,
             $separator,
             $sourceLang,
             $targetLang,
             self::$repository
         );
+
+        $service->setApproximityFeature(self::$approximityFeature);
+
+        return $service;
     }
     
     /**
@@ -34,6 +41,13 @@ class JsonLanguageServiceFactory implements LanguageServiceFactoryMethodInterfac
      */
     static function setJsonLangRepository($repository) {
         self::$repository = $repository;
+    }
+
+    /**
+     * @param bool $enabled 
+     */
+    static function setAproximityFeature($enabled) {
+        self::$approximityFeature = $enabled;
     }
 
 

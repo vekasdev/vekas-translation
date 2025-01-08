@@ -7,6 +7,7 @@ use Vekas\Translation\JsonFileLangHandler;
 use Vekas\Translation\Interfaces\DictionaryInterface;
 
 class JsonDictionaryFactory {
+    static bool $approximityFeature = false;
 
     /**
      * Summary of getDictionery
@@ -29,8 +30,19 @@ class JsonDictionaryFactory {
             $repository
         );
         
-         $service =  JsonLanguageServiceFactory::getLanguageService($source,$target);
-       return new Dictionary($service,new LanguageDetectorFactory());
+        JsonLanguageServiceFactory::setAproximityFeature(self::$approximityFeature);
+        
+        $service =  JsonLanguageServiceFactory::getLanguageService($source,$target);
+        return new Dictionary($service,new LanguageDetectorFactory());
     }
+
+    /**
+     * @param bool $enabled 
+     */
+    static function setAproximityFeature($enabled) {
+        self::$approximityFeature = $enabled;
+    }
+
+    
 
 }

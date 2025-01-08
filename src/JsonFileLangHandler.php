@@ -17,6 +17,8 @@ class JsonFileLangHandler implements  LanguageServiceInterface {
 
     private $swapped = false;
 
+    private $approximityFeature = false;
+
     function __construct (
       private string $directory ,
       private string $separator = "" ,
@@ -173,25 +175,41 @@ class JsonFileLangHandler implements  LanguageServiceInterface {
      * @param string $source
      * @return string
      */
-    function getItem($source,$useApproximity=false) {
-        if ($useApproximity) {
-            $bestResult = [0,""];
-            foreach($this->data as $searchedItem => $searchedItemValue) {
-                $apxy = similar_text($source,$searchedItem);
-                if ( $apxy > $bestResult[0]) {
-                    $bestResult[0] = $apxy;
-                    $bestResult[1] = $searchedItemValue; 
-                }
-            }
-            if ($bestResult[1] !== "") {
-                $item = $bestResult[1];
-            }else {
-                $item = null;
-            }
+    function getItem($source) {
+        if ($this->approximityFeature) {
+            $item = $this->getByApproximity($source);
         } else {
             $item = isset($this->data[$source]) ? $this->data[$source] : null ;
         }
 
+        return $item;
+    }
+
+    /**
+     * @param boolean $enable
+     */
+    function setApproximityFeature($enable) {
+        $this->approximityFeature = $enable;
+    }
+    
+    private function getByApproximity($source) {
+        $bestResult = [0,""];
+        foreach($this->data as $searchedItem => $searchedItemValue) {
+            $apxy = similar_text($source,$searchedItem);
+            if ( $apxy == strlen($source) ) {
+                $bestResult[0] = $apxy;
+                $bestResult[1] = $searchedItemValue; 
+                break;
+            } else if ($apxy > $bestResult[0]) {
+                $bestResult[0] = $apxy;
+                $bestResult[1] = $searchedItemValue;
+            }
+        }
+        if ($bestResult[1] !== "") {
+            $item = $bestResult[1];
+        }else {
+            $item = null;
+        }
         return $item;
     }
 
@@ -257,6 +275,10 @@ class JsonFileLangHandler implements  LanguageServiceInterface {
 
     function getRepository() {
         return $this->jsonLanguageRepository;
+    }
+
+    function isProximityFeatureEnabled() {
+        return $this->approximityFeature;
     }
 
 

@@ -28,4 +28,12 @@ class JsonDictionaryFactoryTest extends TestCase {
         $this->assertInstanceOf(NullDictionary::class,$dictionary);
     }
 
+
+    function testInstantiateJsonServiceWithEnableApproximityFeature() {
+        JsonDictionaryFactory::setAproximityFeature(true);
+        $dictionary = JsonDictionaryFactory::getDictionary(__DIR__."/dics","en","ar");
+        $enabled = $dictionary->getLanguageService()->isProximityFeatureEnabled();
+        $this->assertTrue($enabled);
+    }
+
 }
