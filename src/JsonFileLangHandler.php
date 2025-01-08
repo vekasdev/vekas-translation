@@ -173,8 +173,25 @@ class JsonFileLangHandler implements  LanguageServiceInterface {
      * @param string $source
      * @return string
      */
-    function getItem($source) {
-        $item = isset($this->data[$source]) ? $this->data[$source] : null ;
+    function getItem($source,$useApproximity=false) {
+        if ($useApproximity) {
+            $bestResult = [0,""];
+            foreach($this->data as $searchedItem => $searchedItemValue) {
+                $apxy = similar_text($source,$searchedItem);
+                if ( $apxy > $bestResult[0]) {
+                    $bestResult[0] = $apxy;
+                    $bestResult[1] = $searchedItemValue; 
+                }
+            }
+            if ($bestResult[1] !== "") {
+                $item = $bestResult[1];
+            }else {
+                $item = null;
+            }
+        } else {
+            $item = isset($this->data[$source]) ? $this->data[$source] : null ;
+        }
+
         return $item;
     }
 

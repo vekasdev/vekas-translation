@@ -114,6 +114,23 @@ class JsonFIleLangHandlerTest extends TestCase {
     }
 
 
+    function testGettingItemsWithSnapFeature() {
+        $this->jsonFileLangHandler->setData([
+            "egg" => "بيض",
+            "egypt" => "مصر",
+            "goes" => "يذهب"
+        ]);
+
+        $result = $this->jsonFileLangHandler->getItem("gos",true);
+        $this->assertSame("يذهب",$result);
+
+        $result = $this->jsonFileLangHandler->getItem("go",true);
+        $this->assertSame("يذهب",$result);
+
+        $result = $this->jsonFileLangHandler->getItem("egt",true);
+        $this->assertSame("مصر",$result);
+    }
+    
     function getJsonLanguageService($source,$target) {
         $helper = new JsonLanguageHelper(__DIR__."/dics","2");
         $repository = new JsonLanguageRepository($helper);
